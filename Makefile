@@ -33,6 +33,8 @@ default: randall
 randall: randall.c
 	$(CC) $(CFLAGS) $@.c -o $@
 
+check:
+	./check.sh
 assignment: randall-assignment.$(TAREXT)
 assignment-files = COPYING Makefile randall.c
 randall-assignment.$(TAREXT): $(assignment-files)
