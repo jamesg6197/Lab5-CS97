@@ -44,7 +44,16 @@ int
 main (int argc, char **argv)
 {
   long long nbytes;
-  nbytes = checkinput(argc, argv);
+  struct options opts;
+  checkinput(argc, argv, &opts);
+  if (opts.valid == false)
+    {
+        fprintf (stderr, "%s: usage: %s NBYTES\n", argv[0], argv[0]);
+        return 1;
+    }
+    /* If there's no work to do, don't worry about which library to use. */
+  if (opts.nbytes == 0)
+      return 0;
 
   /* If there's no work to do, don't worry about which library to use.  */
  

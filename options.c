@@ -1,31 +1,67 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include <errno.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 #include "options.h"
-int checkinput(int argc, char** argv)
+void checkinput(int argc, char** argv, struct options* opts )
 {
-  bool valid = false;
-  long long nbytes;
-  if (argc == 2)
-    {
-      char *endptr;
-      errno = 0;
-      nbytes = strtoll (argv[1], &endptr, 10);
-      if (errno)
-        perror (argv[1]);
-      else
-        valid = !*endptr && 0 <= nbytes;
-    }
-  if (!valid)
-    {
-      fprintf (stderr, "%s: usage: %s NBYTES\n", argv[0], argv[0]);
-      return 0;
-    }
+  opts->valid = false;
+  int opt;
+  while ((opt = getopt(argc, argv, "i:o:")) != -1)
+  {
+    switch(opt)
+      {
+      case 'i':
+	if (!strcmp(optarg, "mrand48_r"))
+	  {
+	    opts->input = MRAND;
+	    
+	  }
+	else if (!strcmp(optarg, "rdrand"))
+	  {
+	    opts->input = RDRAND;
+	  }
 
-  /* If there's no work to do, don't worry about which library to use.  */
-  if (nbytes == 0)
-    return 0;
- 
-  return nbytes;
+	else if (optarg[0] == "/")
+	  {
+	    opts->input = SLASHF;
+	    opts->srcfile = optarg;
+          }
+	else
+	  {
+	    fprintf(stderr, "Error: Invalid Argument");
+	    exit(1);
+	  }
+	opts->valid = true;
+	break;
+      case 'o':
+	if (!strcmp(optarg, "stdio"))
+	  {
+	    opts->output = STDIO;
+	  }
+	else
+	  {
+	    opts->output = WRITEN;
+	    opts->blockSize = atoi(optarg);
+	    if (atoi(optarg) <= 0)
+	    {
+	      fprintf(stderr, "Byte number must be positive");
+	      exit(1);
+	    }
+	  }
+	opts->valid = true;
+	break;
+      case '?':
+	fprintf(stderr, "Improper input of arguments and options");
+	exit(1);
+      }
+
+    }
+  if (optind >= argc)
+        return;
+  opts->nbytes = atol(argv[optind]);
+   if (opts->nbytes >= 0)
+       opts->valid = true;
+    
 }
