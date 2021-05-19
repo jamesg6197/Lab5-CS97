@@ -1,10 +1,10 @@
 #include <cpuid.h>
 #include <errno.h>
+#include <immintrin.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdboo.h>
 
-#include "rand64-hw.h"
+#include "./rand64-hw.h"
 struct cpuid { unsigned eax, ebx, ecx, edx; };
 
 /* Return information about the CPU.  See <http://wiki.osdev.org/CPUID>.  */
@@ -35,7 +35,7 @@ hardware_rand64_init (void)
 
 /* Return a random value, using hardware operations.  */
 unsigned long long
-hardware_rand64 (void)
+hardware_rand64 ()
 {
   unsigned long long int x;
   while (! _rdrand64_step (&x))

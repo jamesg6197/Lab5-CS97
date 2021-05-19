@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
 bool
 writebytes (unsigned long long x, int nbytes)
 {

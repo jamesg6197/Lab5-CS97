@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 # Optimization level.  Change this -O2 to -Og or -O0 or whatever.
-OPTIMIZE =
+OPTIMIZE = -Og
 
 # The C compiler and its options.
 CC = gcc
@@ -30,9 +30,8 @@ TAREXT = tgz
 
 default: randall
 
-randall: randall.c
-	$(CC) $(CFLAGS) $@.c -o $@
-
+randall: *.c
+	$(CC) $(CFLAGS) *.c -o randall
 check:
 	./check.sh
 assignment: randall-assignment.$(TAREXT)
