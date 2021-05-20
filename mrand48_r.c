@@ -1,8 +1,6 @@
 #include <immintrin.h>
-#include <cpuid.h>
 #include <time.h>
 #include <stdio.h>
-#include <errno.h>
 
 #include "mrand48_r.h"
 void mrand48_rng_init()

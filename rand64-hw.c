@@ -1,7 +1,5 @@
 #include <cpuid.h>
-#include <errno.h>
 #include <immintrin.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "./rand64-hw.h"

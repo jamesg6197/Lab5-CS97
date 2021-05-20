@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-
-#include <cpuid.h>
 #include "output.h"
 bool
 writebytes (unsigned long long x, int nbytes)
@@ -47,5 +45,5 @@ void writeblocks (unsigned int blocksize, long long nbytes, unsigned long long (
 	    currentArrayIndex = 0;
 	}
     }
-
+  free(buffer);
 }
