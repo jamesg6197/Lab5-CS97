@@ -6,9 +6,9 @@ FILE *urandstream;
 
 /* Initialize the software rand64 implementation.  */
 void
-software_rand64_init (void)
+software_rand64_init (struct options* opts)
 {
-  urandstream = fopen ("/dev/random", "r");
+  urandstream = fopen (opts->srcfile, "r");
   if (! urandstream)
     abort ();
 }

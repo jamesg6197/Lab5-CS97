@@ -8,6 +8,7 @@ void checkinput(int argc, char** argv, struct options* opts )
 {
   opts->valid = false;
   int opt;
+  opts->srcfile = "/dev/random";
   while ((opt = getopt(argc, argv, "i:o:")) != -1)
   {
     switch(opt)
