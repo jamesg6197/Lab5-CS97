@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include "rand64-sw.h"
 
-FILE *urandstream;
+static FILE *urandstream;
 
 /* Initialize the software rand64 implementation.  */
 void
-software_rand64_init (struct options* opts)
+software_rand64_init (void)
 {
-  urandstream = fopen (opts->srcfile, "r");
+  urandstream = fopen (srcfile, "r");
   if (! urandstream)
     abort ();
 }

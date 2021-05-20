@@ -37,13 +37,12 @@
 #include "./rand64-sw.h"
 
 /* Hardware implementation.  */
-
+char* srcfile;
 /* Description of the current CPU.  */
 /* Main program, which outputs N bytes of random data.  */
 int
 main (int argc, char **argv)
 {
-  long long nbytes;
   struct options opts;
   checkinput(argc, argv, &opts);
   if (opts.valid == false)
@@ -71,6 +70,7 @@ main (int argc, char **argv)
     }
   else
     {
+      srcfile = opts.srcfile;
       initialize = software_rand64_init;
       rand64 = software_rand64;
       finalize = software_rand64_fini;
@@ -79,20 +79,25 @@ main (int argc, char **argv)
   initialize ();
   int wordsize = sizeof rand64 ();
   int output_errno = 0;
-
+  if (opts.output == WRITEN)
+    {
+      writeblocks(opts.blockSize, opts.nbytes, rand64);
+    }
+  else if (opts.output == STDIO)
+    {
   do
     {
       unsigned long long x = rand64 ();
-      int outbytes = nbytes < wordsize ? nbytes : wordsize;
+      int outbytes = opts.nbytes < wordsize ? opts.nbytes : wordsize;
       if (!writebytes (x, outbytes))
 	{
 	  output_errno = errno;
 	  break;
 	}
-      nbytes -= outbytes;
+      opts.nbytes -= outbytes;
     }
-  while (0 < nbytes);
-
+  while (0 < opts.nbytes);
+    }
   if (fclose (stdout) != 0)
     output_errno = errno;
 

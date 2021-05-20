@@ -11,7 +11,7 @@ void mrand48_rng_init()
 }
 unsigned long long mrand48_rng()
 {
-  srand48_r(time(NULL), drand_buf);
+  srand48_r(time(NULL), &buf);
   long int a;
   mrand48_r(&buf, &a);
   return (unsigned long long) a;
