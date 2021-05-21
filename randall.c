@@ -33,7 +33,7 @@
 #include "./output.h"
 #include "./rand64-hw.h"
 #include "./rand64-sw.h"
-
+#include "./mrand48_r.h"
 /* Hardware implementation.  */
 char* srcfile;
 /* Description of the current CPU.  */
@@ -60,12 +60,21 @@ main (int argc, char **argv)
   void (*initialize) (void);
   unsigned long long (*rand64) (void);
   void (*finalize) (void);
-  if (rdrand_supported ())
+  if (!rdrand_supported () && opts.input == RDRAND)
+    {
+      fprintf (stderr, "Error: RDRAND is not supported");
+            exit(1);
+    }
+  else if (rdrand_supported () && opts.input != SLASHF)
     {
       initialize = hardware_rand64_init;
-      rand64 = hardware_rand64;
+      if (opts.input == MRAND)
+	rand64 = mrand48_rng;
+      else
+	rand64 = hardware_rand64;
       finalize = hardware_rand64_fini;
     }
+  
   else
     {
       srcfile = opts.srcfile;
@@ -83,18 +92,18 @@ main (int argc, char **argv)
     }
   else if (opts.output == STDIO)
     {
-  do
-    {
-      unsigned long long x = rand64 ();
-      int outbytes = opts.nbytes < wordsize ? opts.nbytes : wordsize;
-      if (!writebytes (x, outbytes))
+      do
 	{
-	  output_errno = errno;
-	  break;
+	  unsigned long long x = rand64 ();
+	  int outbytes = opts.nbytes < wordsize ? opts.nbytes : wordsize;
+	  if (!writebytes (x, outbytes))
+	    {
+	      output_errno = errno;
+	      break;
+	    }
+	  opts.nbytes -= outbytes;
 	}
-      opts.nbytes -= outbytes;
-    }
-  while (0 < opts.nbytes);
+      while (0 < opts.nbytes);
     }
   if (fclose (stdout) != 0)
     output_errno = errno;

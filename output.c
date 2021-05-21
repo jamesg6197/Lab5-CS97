@@ -34,13 +34,16 @@ void writeblocks (unsigned int blocksize, long long nbytes, unsigned long long (
 	}
       while (x > 0 && currentArrayIndex < blocksize)
 	{
+	  if (buffer != NULL){
 	  memcpy(buffer + currentArrayIndex, &x, 1);
 	      currentArrayIndex++;
 	    x >>= CHAR_BIT;
+	  }
+    
 	}
       if (currentArrayIndex == blocksize)
 	{
-	  int bytesWritten = write(1, buffer, nbytes);
+	  int bytesWritten = write(1, buffer, blocksize);
 	    totalWritten += bytesWritten;
 	    currentArrayIndex = 0;
 	}

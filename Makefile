@@ -1,3 +1,4 @@
+
 # Make x86-64 random byte generators.
 
 # Copyright 2015, 2020, 2021 Paul Eggert
@@ -33,6 +34,7 @@ default: randall
 randall: *.c
 	$(CC) $(CFLAGS) *.c -o randall
 check:
+	chmod +x check.sh
 	./check.sh
 assignment: randall-assignment.$(TAREXT)
 assignment-files = COPYING Makefile randall.c
@@ -41,7 +43,9 @@ randall-assignment.$(TAREXT): $(assignment-files)
 
 submission-tarball: randall-submission.$(TAREXT)
 submission-files = $(assignment-files) \
-  notes.txt # More files should be listed here, as needed.
+  notes.txt notes.txt options.c options.h output.c output.h \
+  rand64-hw.c rand64-hw.h rand64-sw.c rand64-sw.h \
+  check.sh mrand48_r.c mrand48_r.h # More files should be listed here, as needed.
 randall-submission.$(TAREXT): $(submission-files)
 	$(TAR) $(TARFLAGS) -cf $@ $(submission-files)
 

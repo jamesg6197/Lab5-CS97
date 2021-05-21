@@ -24,7 +24,7 @@ void checkinput(int argc, char** argv, struct options* opts )
 	    opts->input = RDRAND;
 	  }
 
-	else if (optarg[0] == "/")
+	else if ('/' == optarg[0])
 	  {
 	    opts->input = SLASHF;
 	    opts->srcfile = optarg;
@@ -41,8 +41,8 @@ void checkinput(int argc, char** argv, struct options* opts )
 	  {
 	    opts->output = STDIO;
 	  }
-	else
-	  {
+	else 
+	  { 
 	    opts->output = WRITEN;
 	    opts->blockSize = atoi(optarg);
 	    if (atoi(optarg) <= 0)

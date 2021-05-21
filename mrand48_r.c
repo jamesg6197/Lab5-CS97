@@ -2,7 +2,8 @@
 #include <time.h>
 #include <stdio.h>
 
-#include "mrand48_r.h"
+#include "./mrand48_r.h"
+struct drand48_data buf;
 void mrand48_rng_init()
 {
   
