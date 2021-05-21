@@ -1,6 +1,5 @@
 #include <immintrin.h>
 #include <time.h>
-#include <stdio.h>
 
 #include "./mrand48_r.h"
 struct drand48_data buf;
